@@ -14,7 +14,7 @@ spec:
     path: charts/podinfo
     ref: master
   values:
-    image: nexus.hh.atg.se:17000/releases/podinfo:stg-9ij63o4c
+    image: nexus.hh.atg.se:17000/releases/podinfo:stg-cjucayva
     replicaCount: 2
     hpa:
       enabled: true
