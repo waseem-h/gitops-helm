@@ -76,6 +76,10 @@ Install Weave Flux and its Helm Operator by specifying your fork URL
 (replace `stefanprodan` with your GitHub username): 
 
 ```bash
+oc new-project flux
+oc adm policy add-scc-to-user anyuid system:serviceaccount:flux:flux
+```
+```bash
 helm install --name flux \
 --set rbac.create=true \
 --set helmOperator.create=true \
@@ -149,7 +153,7 @@ The *ci-mock.sh* script does the following:
 Let's create an image corresponding to the `dev` branch (replace `stefanprodan` with your Docker Hub username):
 
 ```
-$ cd hack && ./ci-mock.sh -r stefanprodan/podinfo -b dev
+$ cd hack && ./ci-mock.sh -r delhage/podinfo -b dev
 
 Sending build context to Docker daemon  4.096kB
 Step 1/15 : FROM golang:1.10 as builder
