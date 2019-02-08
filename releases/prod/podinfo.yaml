@@ -10,7 +10,7 @@ metadata:
 spec:
   releaseName: podinfo-prod
   chart:
-    git: git@github.com:delhage/gitops-helm
+    git: ssh://git@github.com/delhage/gitops-helm
     path: charts/podinfo
     ref: master
   values:
