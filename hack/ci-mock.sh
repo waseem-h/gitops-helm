@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-repository="stefanprodan/podinfo"
+repository="lasse/podinfo"
 branch="master"
 version=""
 commit=$(cat /dev/urandom | env LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1 | awk '{print tolower($0)}')
@@ -31,4 +31,5 @@ echo ">>>> Building image ${image} <<<<"
 
 docker build --build-arg GITCOMMIT=${commit} --build-arg VERSION=${version} -t ${image} -f Dockerfile.ci .
 
-docker push ${image}
+docker tag ${image} nexus.hh.atg.se:17001/${image}
+docker push nexus.hh.atg.se:17001/${image}
