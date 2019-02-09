@@ -14,5 +14,5 @@ spec:
     path: charts/podinfo
     ref: master
   values:
-    image: nexus.hh.atg.se:17000/lasse/podinfo:0.4.11
+    image: nexus.hh.atg.se:17000/lasse/podinfo:0.4.12
     replicaCount: 3
