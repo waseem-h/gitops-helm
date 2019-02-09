@@ -14,7 +14,7 @@ spec:
     path: charts/podinfo
     ref: master
   values:
-    image: nexus.hh.atg.se:17000/lasse/podinfo:dev-hsskxulf
+    image: nexus.hh.atg.se:17000/lasse/podinfo:dev-h1izgwsc
     replicaCount: 1
     hpa:
       enabled: false
