@@ -10,11 +10,11 @@ metadata:
 spec:
   releaseName: podinfo-rc
   chart:
-    git: ssh://git@github.com/delhage/gitops-helm
+    git: ssh://git@github.com/delhage/gitops-helm.git
     path: charts/podinfo
     ref: master
   values:
-    image: nexus.hh.atg.se:17000/releases/podinfo:stg-cjucayva
+    image: nexus.hh.atg.se:17000/lasse/podinfo:stg-cjucayva
     replicaCount: 2
     hpa:
       enabled: true
