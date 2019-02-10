@@ -2,13 +2,13 @@
 apiVersion: flux.weave.works/v1beta1
 kind: HelmRelease
 metadata:
-  name: common-services-skeleton
+  name: test1-common-services-skeleton
   namespace: test1-common-services-skeleton
   annotations:
     flux.weave.works/automated: "true"
     flux.weave.works/tag.chart-image: semver:~2.21
 spec:
-  releaseName: test1-common-services-skeleton
+  releaseName: common-services-skeleton
   chart:
     git: ssh://git@github.com/delhage/gitops-helm.git
     path: charts/atg-springboot
