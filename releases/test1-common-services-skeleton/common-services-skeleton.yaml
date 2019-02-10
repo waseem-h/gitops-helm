@@ -8,7 +8,7 @@ metadata:
     flux.weave.works/automated: "true"
     flux.weave.works/tag.chart-image: semver:~2.21
 spec:
-  releaseName: common-services-skeleton
+  releaseName: test1-common-services-skeleton
   chart:
     git: ssh://git@github.com/delhage/gitops-helm.git
     path: charts/atg-springboot
