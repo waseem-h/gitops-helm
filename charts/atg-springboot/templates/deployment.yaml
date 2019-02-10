@@ -1,6 +1,6 @@
 {{- $appName := .Release.Name -}}
 apiVersion: v1
-kind: DeploymentConfig
+kind: Deployment
 metadata:
   labels:
     app: {{ $appName }}
@@ -117,4 +117,3 @@ spec:
       securityContext: {}
       terminationGracePeriodSeconds: 30
   test: false
-  triggers: {}
