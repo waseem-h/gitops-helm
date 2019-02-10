@@ -37,9 +37,9 @@ If you don't have Helm CLI installed, on macOS you can use `brew install kuberne
 Create a service account and a cluster role binding for Tiller: 
 
 ```bash
-kubectl -n kube-system create sa tiller
+oc -n kube-system create sa tiller
 
-kubectl create clusterrolebinding tiller-cluster-rule \
+oc create clusterrolebinding tiller-cluster-rule \
     --clusterrole=cluster-admin \
     --serviceaccount=kube-system:tiller 
 ```
@@ -79,12 +79,16 @@ Install Weave Flux and its Helm Operator by specifying your fork URL
 oc new-project flux
 oc adm policy add-scc-to-user anyuid system:serviceaccount:flux:flux
 ```
+If you use the multitenant network plugin in openshift you need to join the kube-system and flux projects:
+```
+oc adm pod-network join-projects --to=kube-system flux
+```
 ```bash
 helm install --name flux \
 --set rbac.create=true \
 --set helmOperator.create=true \
 --set helmOperator.updateChartDeps=false \
---set git.url=git@github.com:stefanprodan/gitops-helm \
+--set git.url=git@github.com:delhage/gitops-helm \
 --namespace flux \
 weaveworks/flux
 ```
@@ -100,7 +104,7 @@ At startup Flux generates a SSH key and logs the public key.
 Find the SSH public key with:
 
 ```bash
-kubectl -n flux logs deployment/flux | grep identity.pub | cut -d '"' -f2
+oc -n flux logs deployment/flux | grep identity.pub | cut -d '"' -f2
 ```
 
 In order to sync your cluster state with Git you need to copy the public key and 
