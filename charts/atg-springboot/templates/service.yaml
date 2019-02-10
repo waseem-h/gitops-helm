@@ -1,25 +1,25 @@
 {{- $appName := .Release.Name -}}
 {{- $port := .Values.route.targetport -}}
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
-      service.alpha.openshift.io/serving-cert-secret-name: {{ $appName }}-service-certs
-      prometheus.io/path: {{ .Values.service.basepath }}/admin/prometheus
-      prometheus.io/port: {{ .Values.prometheus.port }}
-      prometheus.io/scrape: {{ .Values.prometheus.scrape }}
-      prometheus.io/scheme: {{ .Values.prometheus.scheme }}
-    labels:
-      app: {{ $appName }}
-    name: {{ $appName }}
-  spec:
-    ports:
-      - name: {{ $port }}-tcp
-        port: {{ $port }}
-        protocol: TCP
-        targetPort: {{ $port }}
-    selector:
-      app: {{ $appName }}
-      deployment: {{ $appName }}
-    sessionAffinity: None
-    type: {{ .Values.service.type }}
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.alpha.openshift.io/serving-cert-secret-name: {{ $appName }}-service-certs
+    prometheus.io/path: {{ .Values.service.basepath }}/admin/prometheus
+    prometheus.io/port: {{ .Values.prometheus.port }}
+    prometheus.io/scrape: {{ .Values.prometheus.scrape }}
+    prometheus.io/scheme: {{ .Values.prometheus.scheme }}
+  labels:
+    app: {{ $appName }}
+  name: {{ $appName }}
+spec:
+  ports:
+    - name: {{ $port }}-tcp
+      port: {{ $port }}
+      protocol: TCP
+      targetPort: {{ $port }}
+  selector:
+    app: {{ $appName }}
+    deployment: {{ $appName }}
+  sessionAffinity: None
+  type: {{ .Values.service.type }}
