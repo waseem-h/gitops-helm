@@ -1,0 +1,122 @@
+---
+{{- $appName := .Release.Name -}}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: {{ $appName }}
+      atg-version: {{ .Values.ATGversion }}
+    name: {{ $appName }}
+  spec:
+    replicas: {{ .Values.replicaCount }}
+    selector:
+      app: {{ $appName }}
+      atg-version: {{ .Values.ATGversion }}
+      deploymentconfig: {{ $appName }}
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: {{ $appName }}
+          atg-version: {{ .Values.ATGversion }}
+          deploymentconfig: {{ $appName }}
+      spec:
+        volumes:
+          - name: keystore-volume
+            emptyDir: {}
+          - name: service-certs
+            secret:
+              secretName: {{ $appName }}-service-certs
+        initContainers:
+          - name: {{ $appName }}-keystore
+            image: redhat-sso-7/sso71-openshift:1.1-16
+            env:
+              - name: keyfile
+                value: /var/run/secrets/openshift.io/services_serving_certs/tls.key
+              - name: crtfile
+                value: /var/run/secrets/openshift.io/services_serving_certs/tls.crt
+              - name: keystore_pkcs12
+                value: /var/run/secrets/java.io/keystores/keystore.pkcs12
+              - name: keystore_jks
+                value: /var/run/secrets/java.io/keystores/keystore.jks
+              - name: password
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ $appName }}
+                    key: KEYSTORE_PASSWORD
+            command: ['/bin/bash']
+            args: ['-c', "openssl pkcs12 -export -inkey $keyfile -in $crtfile -out $keystore_pkcs12 -password pass:$password && keytool -importkeystore -noprompt -srckeystore $keystore_pkcs12 -srcstoretype pkcs12 -destkeystore $keystore_jks -storepass $password -srcstorepass $password"]
+            volumeMounts:
+              - name: keystore-volume
+                mountPath: /var/run/secrets/java.io/keystores
+              - name: service-certs
+                mountPath: /var/run/secrets/openshift.io/services_serving_certs
+                readOnly: true
+          - name: {{ $appName }}-truststore
+            image: redhat-openjdk-18/openjdk18-openshift
+            env:
+              - name: ca_bundle
+                value: /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
+              - name: truststore_jks
+                value: /var/run/secrets/java.io/keystores/truststore.jks
+            command: ['/bin/bash']
+            args: ['-c', "csplit -z -f crt- $ca_bundle '/-----BEGIN CERTIFICATE-----/' '{*}' && for file in crt-*; do keytool -import -noprompt -keystore $truststore_jks -file $file -storepass changeit -alias service-$file; done && keytool -importkeystore -srckeystore  /etc/alternatives/jre/lib/security/cacerts -srcstorepass changeit -destkeystore $truststore_jks -deststorepass changeit"]
+            volumeMounts:
+              - name: keystore-volume
+                mountPath: /var/run/secrets/java.io/keystores
+        containers:
+          - name: {{ $appName }}
+            envFrom:
+              - configMapRef:
+                  name: env-config
+              - configMapRef:
+                  name: {{ $appName }}
+            image: {{ .Values.image }}
+            imagePullPolicy: Always
+            ports:
+              - containerPort: 8443
+                protocol: TCP
+            volumeMounts:
+              - name: keystore-volume
+                mountPath: /var/run/secrets/java.io/keystores
+            livenessProbe:
+              httpGet:
+                path: {{ .Values.service.basepath }}/admin/health
+                port: {{ .Values.route.targetport }}
+                scheme: {{ .Values.service.scheme }}
+              initialDelaySeconds: 15
+              timeoutSeconds: 5
+              periodSeconds: 30
+              successThreshold: 1
+              failureThreshold: 5
+            readinessProbe:
+              exec:
+                command:
+                  - /bin/bash
+                  - -c
+                  - curl -s -k https://localhost:{{ .Values.route.targetport}}{{ .Values.service.basepath}}/admin/health | egrep -q ^\{\"status\":\"UP\"
+              initialDelaySeconds: 15
+              timeoutSeconds: 5
+              periodSeconds: 30
+              successThreshold: 1
+              failureThreshold: 5
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers: {}
+

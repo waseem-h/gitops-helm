@@ -1,0 +1,26 @@
+---
+{{- if .Values.route.enabled -}}
+{{- $appName := .Release.Name -}}
+- apiVersion: v1
+  kind: Route
+  metadata:
+{{- with .Values.router.annotations }}
+    annotations:
+{{ toYaml . | indent 6 }}
+{{- end }}
+    labels:
+      app: {{ $appName }}
+      route: {{ .Values.route.router }}
+    name: {{ $appName }}
+  spec:
+    host: {{ $appName }}-{{ .Release.Namespace }}.{{ .Values.route.domainname }}.atg.se
+    port:
+      targetPort: {{ .Values.route.targetport}}
+    tls:
+      termination: {{ .Values.route.tlstermination }}
+    to:
+      kind: Service
+      name: {{ $appName }}
+      weight: 100
+    wildcardPolicy: None
+{{- end }}

@@ -1,0 +1,50 @@
+---
+# Default values for ATG springboot.
+
+replicaCount: 1
+
+imagePullPolicy: IfNotPresent
+
+service:
+  basepath:
+  scheme: http
+prometheus:
+  port: 8080
+  scrape: true
+  scheme: http
+route:
+  enabled: false
+  router: internal
+  annotations:
+    haproxy.router.openshift.io/balance: "leastconn"
+    haproxy.router.openshift.io/disable_cookies: "false"
+    haproxy.router.openshift.io/timeout: "30s"
+  domainname: ocplab.hh
+  targetport: 8080
+  tlstermination: edge
+# Heapster or metrics-server add-on required
+hpa:
+  enabled: false
+  maxReplicas: 2
+  # average total CPU usage per pod (1-100)
+  cpu:
+  # average memory usage per pod (100Mi-1Gi)
+  memory:
+  # average http requests per second per pod (k8s-prometheus-adapter)
+  requests:
+
+resources:
+  limits:
+  requests:
+    cpu: 10m
+    memory: 16Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+logLevel: debug
+
+ATGversion:
