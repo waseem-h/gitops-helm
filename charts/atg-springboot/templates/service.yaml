@@ -23,5 +23,5 @@
       app: {{ $appName }}
       deployment: {{ $appName }}
     sessionAffinity: None
-    type: ClusterIP
+    type: {{ .Values.service.type }}
 
