@@ -9,6 +9,7 @@ metadata:
     flux.weave.works/tag.chart-image: semver:~2.21
 spec:
   ATGversion: 2.21.0
+  releaseVersion: 2.21.0
   releaseName: common-services-skeleton
   chart:
     git: ssh://git@github.com/delhage/gitops-helm.git
