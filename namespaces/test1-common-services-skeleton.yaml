@@ -3,3 +3,15 @@ apiVersion: project.openshift.io/v1
 kind: ProjectRequest
 metadata:
   name: test1-common-services-skeleton
+
+apiVersion: v1
+data:
+  ENV: test1-common-services-skeleton
+  SERVER_TOMCAT_PROTOCOL_HEADER: x-forwarded-proto
+  SERVER_TOMCAT_REMOTE_IP_HEADER: x-forwarded-for
+  SPRING_PROFILES_ACTIVE: release
+  TZ: Europe/Stockholm
+kind: ConfigMap
+metadata:
+  name: env-config
+  namespace: test1-common-services-skeleton
