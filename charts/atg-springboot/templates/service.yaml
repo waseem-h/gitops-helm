@@ -11,6 +11,7 @@ metadata:
     prometheus.io/scheme: {{ .Values.prometheus.scheme }}
   labels:
     app: {{ $appName }}
+    chart: {{ template "atg-springboot.chart" . }}
   name: {{ $appName }}
 spec:
   ports:

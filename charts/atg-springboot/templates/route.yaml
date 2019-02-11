@@ -9,7 +9,9 @@ metadata:
 {{- end }}
   labels:
     app: {{ $appName }}
+    atg-version: {{ .Values.ATGversion }}
     route: {{ .Values.route.router }}
+    chart: {{ template "atg-springboot.chart" . }}
   name: {{ $appName }}
 spec:
   host: {{ $appName }}-{{ .Release.Namespace }}.{{ .Values.route.domainname }}.atg.se

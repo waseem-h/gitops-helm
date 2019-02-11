@@ -6,8 +6,6 @@ metadata:
     app: {{ $appName }}
     atg-version: {{ .Values.ATGversion }}
     chart: {{ template "atg-springboot.chart" . }}
-    chart-app: {{ template "atg-springboot.name" . }}
-    release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   name: {{ $appName }}
 spec:
@@ -31,6 +29,7 @@ spec:
       labels:
         app: {{ $appName }}
         atg-version: {{ .Values.ATGversion }}
+        chart: {{ template "atg-springboot.chart" . }}
         deploymentconfig: {{ $appName }}
     spec:
       volumes:
@@ -106,7 +105,7 @@ spec:
               command:
                 - /bin/bash
                 - -c
-                - curl -s -k https://localhost:{{ .Values.route.targetport}}{{ .Values.service.basepath}}/admin/health | egrep -q ^\{\"status\":\"UP\"
+                - curl -s -k https://localhost:{{ .Values.route.targetport }}{{ .Values.service.basepath}}/admin/health | egrep -q ^\{\"status\":\"UP\"
             initialDelaySeconds: 15
             timeoutSeconds: 5
             periodSeconds: 30

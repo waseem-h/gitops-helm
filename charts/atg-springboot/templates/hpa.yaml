@@ -1,8 +1,13 @@
 {{- if .Values.hpa.enabled -}}
+{{- $appName := .Release.Name -}}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ .Release.Name }}
+  labels:
+    app: {{ $appName }}
+    chart: {{ template "atg-springboot.chart" . }}
+    heritage: {{ .Release.Service }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1beta2
