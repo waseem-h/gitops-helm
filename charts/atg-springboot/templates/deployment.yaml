@@ -5,6 +5,10 @@ metadata:
   labels:
     app: {{ $appName }}
     atg-version: {{ .Values.ATGversion }}
+    chart: {{ template "atg-springboot.chart" . }}
+    chart-app: {{ template "atg-springboot.name" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
   name: {{ $appName }}
 spec:
   replicas: {{ .Values.replicaCount }}
