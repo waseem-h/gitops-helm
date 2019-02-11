@@ -6,8 +6,8 @@ metadata:
   annotations:
     service.alpha.openshift.io/serving-cert-secret-name: {{ $appName }}-service-certs
     prometheus.io/path: {{ .Values.service.basepath }}/admin/prometheus
-    prometheus.io/port: {{ .Values.prometheus.port }}
-    prometheus.io/scrape: {{ .Values.prometheus.scrape }}
+    prometheus.io/port: "{{ .Values.prometheus.port }}"
+    prometheus.io/scrape: "{{ .Values.prometheus.scrape }}"
     prometheus.io/scheme: {{ .Values.prometheus.scheme }}
   labels:
     app: {{ $appName }}
