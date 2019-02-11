@@ -8,7 +8,6 @@ metadata:
     flux.weave.works/automated: "true"
     flux.weave.works/tag.chart-image: semver:~2.21
 spec:
-  ATGversion: 2.21.0
   releaseVersion: 2.21.0
   releaseName: common-services-skeleton
   chart:
@@ -16,6 +15,7 @@ spec:
     path: charts/atg-springboot
     ref: master
   values:
+    ATGversion: 2.21.0
     image: nexus.hh.atg.se:17000/lasse/common-services-skeleton:2.21.0
     replicaCount: 1
     hpa:
@@ -25,3 +25,5 @@ spec:
     prometheus:
       port: 8443
       scheme: https
+    route:
+      targetport: 8443
