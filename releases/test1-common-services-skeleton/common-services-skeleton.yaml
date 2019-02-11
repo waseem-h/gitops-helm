@@ -27,5 +27,4 @@ spec:
       port: 8443
       scheme: https
     route:
-      enabled: true
       targetport: 8443
