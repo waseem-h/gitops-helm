@@ -16,7 +16,7 @@ spec:
     ref: master
   values:
     ATGversion: 2.21.0
-    image: nexus.hh.atg.se:17000/lasse/common-services-skeleton:2.21.0
+    image: nexus.hh.atg.se:17000/lasse/common-services-skeleton:2.21.1
     replicaCount: 1
     hpa:
       enabled: false
