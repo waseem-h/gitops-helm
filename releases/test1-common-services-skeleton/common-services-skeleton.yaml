@@ -14,6 +14,7 @@ spec:
     git: ssh://git@github.com/delhage/gitops-helm.git
     path: charts/atg-springboot
     ref: master
+    appVersion: 2.21.0
   values:
     ATGversion: 2.21.0
     image: nexus.hh.atg.se:17000/lasse/common-services-skeleton:2.21.1
