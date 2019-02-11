@@ -1,6 +1,6 @@
 {{- $appName := .Release.Name -}}
-apiVersion: v1
-kind: Deployment
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
 metadata:
   labels:
     app: {{ $appName }}
@@ -91,7 +91,7 @@ spec:
             httpGet:
               path: {{ .Values.service.basepath }}/admin/health
               port: {{ .Values.route.targetport }}
-              scheme: {{ .Values.service.scheme }}
+              scheme: HTTPS
             initialDelaySeconds: 15
             timeoutSeconds: 5
             periodSeconds: 30
