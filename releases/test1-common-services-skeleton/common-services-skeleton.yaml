@@ -29,3 +29,4 @@ spec:
     route:
       enabled: true
       targetport: 8443
+      tlstermination: reencrypt
