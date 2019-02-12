@@ -6,18 +6,18 @@ metadata:
   namespace: test1-common-services-skeleton
   annotations:
     flux.weave.works/automated: "true"
-    flux.weave.works/tag.chart-image: semver:~2.21
+    flux.weave.works/tag.chart-image: semver:~2.22
 spec:
-  appVersion: 2.21.0
+  appVersion: 2.22.0
   releaseName: common-services-skeleton
   chart:
     git: ssh://git@github.com/delhage/gitops-helm.git
     path: charts/atg-springboot
     ref: master
-    appVersion: 2.21.0
+    appVersion: 2.22.0
   values:
-    ATGversion: 2.21.0
-    image: nexus.hh.atg.se:17000/lasse/common-services-skeleton:2.21.1
+    ATGversion: 2.22.0
+    image: nexus.hh.atg.se:17000/lasse/common-services-skeleton:2.22.0
     replicaCount: 1
     hpa:
       enabled: false
