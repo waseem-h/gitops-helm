@@ -2,6 +2,7 @@
 apiVersion: v1
 data:
   SPRING_CLOUD_VAULT_ENABLED: 'false'
+  PASSWORD: 'secret'
   VAULT_HOST: vault-vault.ocplab.hh.atg.se
   VAULT_PORT: "8200"
 kind: ConfigMap
